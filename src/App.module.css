@@ -63,9 +63,9 @@
   /* max-width: 300px; */
 }
 
-.card:hover,
-.card:focus,
-.card:active,
+.card:not(:disabled):hover,
+.card:not(:disabled):focus,
+.card:not(:disabled):active,
 .card.active {
   color: var(--color);
   border-color: var(--color);
