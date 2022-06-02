@@ -21,7 +21,7 @@ const TestPage = () => {
   if (state.matches("result")) {
     return (
       <main className={styles.main} style={{ justifyContent: "center" }}>
-        <h1 className={styles.title}>אימון</h1>
+        <h1 className={styles.title}>מבחן</h1>
         <div className={styles.description} style={{ margin: 0 }}>
           {correctQuestions === totalQuestions ? (
             <h2>כל הכבוד! הצלחתם לענות על כל השאלות!</h2>
