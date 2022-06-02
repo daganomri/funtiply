@@ -12,6 +12,7 @@ const PracticePage = () => {
     numbers: [firstNumber, secondNumber],
     answers,
     correctAnswer,
+    answeredQuestions,
     selectedAnswer,
     correctQuestions,
     totalQuestions,
@@ -70,7 +71,7 @@ const PracticePage = () => {
           return (
             <button
               disabled={isShowSelection}
-              key={answer}
+              key={`${answeredQuestions}_${answer}`}
               className={classnames(styles.card, {
                 [styles.active]: isShowSelection && (isCorrect || isSelected),
                 [styles.correct]: isShowSelection && isCorrect,

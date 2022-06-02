@@ -14,6 +14,7 @@ const TestPage = () => {
     correctAnswer,
     selectedAnswer,
     correctQuestions,
+    answeredQuestions,
     totalQuestions,
   } = state.context;
 
@@ -91,7 +92,7 @@ const TestPage = () => {
           return (
             <button
               disabled={isShowSelection}
-              key={answer}
+              key={`${answeredQuestions}_${answer}`}
               className={classnames(styles.card, {
                 [styles.active]: isShowSelection && (isCorrect || isSelected),
                 [styles.correct]: isShowSelection && isCorrect,
