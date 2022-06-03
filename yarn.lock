@@ -768,6 +768,11 @@ use-sync-external-store@^1.0.0:
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.1.0.tgz#3343c3fe7f7e404db70f8c687adf5c1652d34e82"
   integrity sha512-SEnieB2FPKEVne66NpXPd1Np4R1lTNKfjuy3XdIoPQKYBAFdzbzSZlSn1KJZUiihQLQC5Znot4SBz1EOTBwQAQ==
 
+use-timer@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/use-timer/-/use-timer-2.0.1.tgz#eef400a83e3fa4af9896fdd6d07d34f676e9373c"
+  integrity sha512-ESFkDYZluJZ+G/CaoOBFxg0TjuG7kgNFNhIFZhqv14ho2WIZwuxkRnEURhyLm9I4vNz+ea9ZowNaOkExDAM+6Q==
+
 vite@^2.9.9:
   version "2.9.9"
   resolved "https://registry.yarnpkg.com/vite/-/vite-2.9.9.tgz#8b558987db5e60fedec2f4b003b73164cb081c5e"

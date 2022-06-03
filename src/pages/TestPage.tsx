@@ -1,12 +1,26 @@
 import styles from "../App.module.css";
-import { TestMachine } from "../machines";
 import { useMachine } from "@xstate/react";
 import classnames from "classnames";
 import useDocumentTitle from "../useDocumentTitle";
 import resetImage from "../reset.png";
+import { Difficulty } from "../machines/GameMachine/types";
+import createGameMachine from "../machines/GameMachine/GameMachine";
+import React from "react";
+import { useTimer } from "use-timer";
+import { useSessionStorage } from "../utils/useSessionStorage";
 
 const TestPage = () => {
   useDocumentTitle("כיף-כפל - מבחן");
+  const { time, pause, reset, start } = useTimer({ autostart: true });
+  const [difficulty] = useSessionStorage<Difficulty>(
+    "funtiply-difficulty",
+    "easy"
+  );
+  const TestMachine = React.useMemo(
+    () => createGameMachine("test", difficulty),
+    [difficulty]
+  );
+
   const [state, send] = useMachine(TestMachine);
   const {
     numbers: [firstNumber, secondNumber],
@@ -17,6 +31,13 @@ const TestPage = () => {
     answeredQuestions,
     totalQuestions,
   } = state.context;
+
+  React.useEffect(() => {
+    if (state.matches("result")) {
+      pause();
+      return () => start();
+    }
+  }, [state]);
 
   if (state.matches("result")) {
     return (
@@ -30,9 +51,15 @@ const TestPage = () => {
               הצלחתם לענות על {correctQuestions} מתוך {totalQuestions} שאלות
             </h2>
           )}
+          <p className={styles.decription}>לקח לכם {time} שניות!</p>
+          <p className={styles.decription}>רוצים לנסות שוב?</p>
         </div>
-        <div style={{ fontSize: "1.2rem" }}>רוצים לנסות שוב?</div>
-        <button className={styles.card} onClick={() => send({ type: "RESET" })}>
+        <button
+          className={styles.card}
+          onClick={() => {
+            send({ type: "RESET" });
+            reset();
+          }}>
           נסו שוב
         </button>
       </main>
@@ -61,19 +88,39 @@ const TestPage = () => {
           </span>{" "}
           / {totalQuestions}
         </p>
-        <img
-          onClick={() => send({ type: "RESET" })}
-          src={resetImage}
-          height='20'
-          width='20'
+        <div
           style={{
-            display: "inline",
             position: "absolute",
+            margin: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: 5,
             top: 5,
             left: 5,
-            cursor: "pointer",
-          }}
-        />
+          }}>
+          <img
+            onClick={() => {
+              send({ type: "RESET" });
+              reset();
+            }}
+            src={resetImage}
+            height='22'
+            width='22'
+            style={{
+              display: "inline",
+              cursor: "pointer",
+            }}
+          />
+          <p
+            className={styles.description}
+            style={{
+              fontWeight: "bold",
+              fontSize: "clamp(1rem, 2vw, 2rem)",
+              margin: 0,
+            }}>
+            {time}
+          </p>
+        </div>
         {firstNumber} X {secondNumber} = {selectedAnswer ? correctAnswer : "??"}
       </output>
 
@@ -82,7 +129,7 @@ const TestPage = () => {
         style={{
           gridTemplateColumns: "1fr 1fr",
           display: "grid",
-          width: "75vw",
+          width: "80vw",
         }}>
         {answers.map((answer) => {
           const isShowSelection = state.matches("showSelection");

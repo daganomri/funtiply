@@ -7,9 +7,9 @@ import {
   resetAction,
 } from "./actions";
 import { isTestFinishedGuard } from "./guards";
-import type { GameEvent, GameContext, Mode } from "./types";
+import type { GameEvent, GameContext, Mode, Difficulty } from "./types";
 
-const createGameMachine = (mode: Mode) => {
+const createGameMachine = (mode: Mode, difficulty: Difficulty) => {
   return createMachine({
     id: "gameMachine",
     initial: "question",
@@ -17,7 +17,7 @@ const createGameMachine = (mode: Mode) => {
       context: {} as GameContext,
       events: {} as GameEvent,
     },
-    context: initializeGameContext(mode),
+    context: initializeGameContext(mode, difficulty),
     states: {
       question: {
         entry: generateQuestionAction,

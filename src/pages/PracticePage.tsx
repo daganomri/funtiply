@@ -1,12 +1,24 @@
 import styles from "../App.module.css";
-import { PracticeMachine } from "../machines";
 import { useMachine } from "@xstate/react";
 import classnames from "classnames";
 import useDocumentTitle from "../useDocumentTitle";
 import resetImage from "../reset.png";
+import createGameMachine from "../machines/GameMachine/GameMachine";
+import { Difficulty } from "../machines/GameMachine/types";
+import React from "react";
+import { useSessionStorage } from "../utils/useSessionStorage";
 
 const PracticePage = () => {
   useDocumentTitle("כיף-כפל - אימון");
+  const [difficulty] = useSessionStorage<Difficulty>(
+    "funtiply-difficulty",
+    "easy"
+  );
+  const PracticeMachine = React.useMemo(
+    () => createGameMachine("practice", difficulty),
+    [difficulty]
+  );
+
   const [state, send] = useMachine(PracticeMachine);
   const {
     numbers: [firstNumber, secondNumber],
@@ -43,8 +55,8 @@ const PracticePage = () => {
         <img
           onClick={() => send({ type: "RESET" })}
           src={resetImage}
-          height='20'
-          width='20'
+          height='22'
+          width='22'
           style={{
             display: "inline",
             position: "absolute",
@@ -61,7 +73,7 @@ const PracticePage = () => {
         style={{
           gridTemplateColumns: "1fr 1fr",
           display: "grid",
-          width: "75vw",
+          width: "80vw",
         }}>
         {answers.map((answer) => {
           const isShowSelection = state.matches("showSelection");

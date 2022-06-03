@@ -4,26 +4,41 @@ import {
   shuffleArray,
 } from "../../utils/math";
 import { assign } from "xstate";
-import type { GameContext, GameEvent, Mode } from "./types";
+import type { Difficulty, GameContext, GameEvent, Mode } from "./types";
 
-export const initializeGameContext = (mode: Mode): GameContext => {
+const difficultyToMaxNumber: Record<Difficulty, number> = {
+  easy: 10,
+  medium: 15,
+  hard: 20,
+};
+
+export const initializeGameContext = (
+  mode: Mode,
+  difficulty: Difficulty
+): GameContext => {
   return {
     numbers: [],
     answers: [],
     correctAnswer: null,
     selectedAnswer: null,
-    totalQuestions: mode === "practice" ? 0 : 20,
+    totalQuestions: mode === "practice" ? 0 : 1,
     correctQuestions: 0,
     answeredQuestions: 0,
+    difficulty,
     mode,
   };
 };
 
-export const generateQuestion = (): Pick<
+export const generateQuestion = (
+  difficulty: Difficulty
+): Pick<
   GameContext,
   "numbers" | "answers" | "correctAnswer" | "selectedAnswer"
 > => {
-  const numbers = [randomNumberInRange(1, 10), randomNumberInRange(1, 10)];
+  const numbers = [
+    randomNumberInRange(1, difficultyToMaxNumber[difficulty]),
+    randomNumberInRange(1, difficultyToMaxNumber[difficulty]),
+  ];
   const correctAnswer = numbers[0] * numbers[1];
 
   let answers = [correctAnswer];
@@ -48,7 +63,7 @@ export const generateQuestion = (): Pick<
 export const generateQuestionAction = assign<GameContext, GameEvent>(
   (context) => ({
     ...context,
-    ...generateQuestion(),
+    ...generateQuestion(context.difficulty),
   })
 );
 
@@ -73,4 +88,4 @@ export const updateCountersAction = assign<
 export const resetAction = assign<
   GameContext,
   Extract<GameEvent, { type: "RESET" }>
->(({ mode }) => initializeGameContext(mode));
+>(({ mode, difficulty }) => initializeGameContext(mode, difficulty));

@@ -1,4 +1,5 @@
 export type Mode = "practice" | "test";
+export type Difficulty = "easy" | "medium" | "hard";
 
 export interface GameContext {
   mode: Mode;
@@ -9,6 +10,7 @@ export interface GameContext {
   correctQuestions: number;
   answeredQuestions: number;
   totalQuestions: number;
+  difficulty: Difficulty;
 }
 
 export type GameEvent = { type: "ANSWER"; answer: number } | { type: "RESET" };
