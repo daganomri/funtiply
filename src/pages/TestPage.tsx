@@ -74,7 +74,7 @@ const TestPage = () => {
             cursor: "pointer",
           }}
         />
-        {firstNumber} * {secondNumber} = {selectedAnswer ? correctAnswer : "??"}
+        {firstNumber} X {secondNumber} = {selectedAnswer ? correctAnswer : "??"}
       </output>
 
       <div
