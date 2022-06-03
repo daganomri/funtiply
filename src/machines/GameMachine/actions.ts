@@ -21,7 +21,7 @@ export const initializeGameContext = (
     answers: [],
     correctAnswer: null,
     selectedAnswer: null,
-    totalQuestions: mode === "practice" ? 0 : 1,
+    totalQuestions: mode === "practice" ? 0 : 20,
     correctQuestions: 0,
     answeredQuestions: 0,
     difficulty,
